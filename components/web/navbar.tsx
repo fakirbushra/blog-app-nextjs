@@ -1,0 +1,55 @@
+"use client";
+
+import Link from "next/link";
+import { Button, buttonVariants } from "../ui/button";
+import { ThemeToggle } from "./theme-toggle";
+import { useConvexAuth } from "convex/react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
+export function Navbar() {
+
+  const {isAuthenticated, isLoading} = useConvexAuth();
+  const router = useRouter()
+
+  return (
+    <nav className="flex w-full py-5 items-center justify-between">
+        <div className="flex items-center gap-8">
+            <Link href="/" className="text-3xl font-bold">
+                Dev<span className="text-cyan-500">Blog</span>
+            </Link>
+
+            <div className="flex items-center gap-2">
+                <Link className={buttonVariants({variant: "ghost"})} href="/">Home</Link>
+                <Link className={buttonVariants({variant: "ghost"})} href="/blog">Blog</Link>
+                <Link className={buttonVariants({variant: "ghost"})} href="/create">Create</Link>
+            </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+            {isLoading ? null : isAuthenticated ? (
+                <Button onClick={() => authClient.signOut({
+                    fetchOptions: {
+                        onSuccess: () => {
+                            toast.success("Logged Out Successfully")
+                            router.push("/")
+                        },
+                        onError: (error) => {
+                            toast.error(error.error.message)
+                        }
+                    }
+                })}>Logout</Button>
+            ) : (<>
+            <Link className={buttonVariants({variant: "default"})} href="/auth/sign-up">
+                Sign Up
+            </Link>
+            <Link className={buttonVariants({variant: "secondary"})} href="/auth/login">
+                Login
+            </Link>
+            </>)}
+            <ThemeToggle />
+        </div>
+    </nav>
+  )
+}
