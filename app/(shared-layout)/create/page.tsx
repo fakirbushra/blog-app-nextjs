@@ -1,4 +1,5 @@
 "use client";
+import { createBlogAction } from "@/app/actions";
 import { postSchema } from "@/app/schemas/blog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +19,6 @@ import z from "zod";
 export default function CreateRoute() {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
-    const mutation = useMutation(api.posts.createPost)
     const form = useForm({
         resolver: zodResolver(postSchema),
         defaultValues: {
@@ -28,15 +28,17 @@ export default function CreateRoute() {
     })
 
     function onSubmit(values: z.infer<typeof postSchema>) {
-        startTransition(() => {
-            mutation({
-                title: values.title,
-                body: values.content,
-            })
+        startTransition( async () => {
 
-            toast.success("Post Published")
+            console.log("Hello from client");
 
-            router.push("/")
+            // option 1: using server actions
+            await createBlogAction(values)
+
+            // option 2: using route handler (+ adding create-blog route)
+            // await fetch('/api/create-blog', {
+            //     method: 'POST'
+            // })
         })
     }
 

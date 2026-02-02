@@ -17,7 +17,7 @@ export function Navbar() {
     <nav className="flex w-full py-5 items-center justify-between">
         <div className="flex items-center gap-8">
             <Link href="/" className="text-3xl font-bold">
-                Dev<span className="text-cyan-500">Blog</span>
+                Dev<span className="text-primary">Blog</span>
             </Link>
 
             <div className="flex items-center gap-2">
