@@ -6,24 +6,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/convex/_generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "convex/react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import z from "zod";
 
 export default function CreateRoute() {
-    const router = useRouter()
     const [isPending, startTransition] = useTransition()
     const form = useForm({
         resolver: zodResolver(postSchema),
         defaultValues: {
           title: "",
-          content: ""
+          content: "",
+          image: undefined,
         }
     })
 
@@ -57,18 +54,38 @@ export default function CreateRoute() {
                 <CardContent>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FieldGroup className="gap-y-4">
-                            <Controller name='title' control={form.control} render={({field, fieldState}) => (
+                            <Controller name='title' control={form.control} 
+                            render={({field, fieldState}) => (
                                 <Field>
                                     <FieldLabel>Title</FieldLabel>
-                                    <Input aria-invalid={fieldState.invalid} placeholder='Enter a title' {...field} />
+                                    <Input aria-invalid={fieldState.invalid} 
+                                    placeholder='Enter a title' {...field} />
                                     {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
                                 </Field>
                             )} />
 
-                            <Controller name='content' control={form.control} render={({field, fieldState}) => (
+                            <Controller name='content' control={form.control} 
+                            render={({field, fieldState}) => (
                                 <Field>
                                     <FieldLabel>Body</FieldLabel>
-                                    <Textarea aria-invalid={fieldState.invalid} placeholder='Write your article here' {...field} />
+                                    <Textarea aria-invalid={fieldState.invalid} 
+                                    placeholder='Write your article here' {...field} />
+                                    {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
+                                </Field>
+                            )} />
+
+                            <Controller name='image' control={form.control} 
+                            render={({field, fieldState}) => (
+                                <Field>
+                                    <FieldLabel>Body</FieldLabel>
+                                    <Input aria-invalid={fieldState.invalid} 
+                                    placeholder='Write your article here' 
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(event) => {
+                                        const file = event.target.files?.[0]
+                                        field.onChange(file)
+                                    }} />
                                     {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
                                 </Field>
                             )} />
