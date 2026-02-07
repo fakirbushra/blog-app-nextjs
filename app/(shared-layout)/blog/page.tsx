@@ -4,9 +4,22 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
+
+export const dynamic = 'force-static'
+// 'auto' | 'force-dynamic' | 'error' | 'force-static'
+export const revalidate = 30
+// false | 0 | number
+
+export const metadata: Metadata = {
+    title: "Blog | DevBlog - The Developer Blog",
+    description: "Read latest Dev articles and insights",
+    category: "Web Development",
+    authors: [{name: "Fakir Bushra"}]
+}
 
 export default function BlogPage() {
   
@@ -25,7 +38,7 @@ export default function BlogPage() {
 }
 
 async function LoadBlogPosts() {
-    await new Promise((resolve) => setTimeout(resolve, 2000)) 
+    // await new Promise((resolve) => setTimeout(resolve, 2000)) 
     const data = await fetchQuery(api.posts.getPost)
 
     return (
