@@ -1,7 +1,6 @@
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <div>Index Page</div>
+    <div className="">Index Page</div>
   );
 }

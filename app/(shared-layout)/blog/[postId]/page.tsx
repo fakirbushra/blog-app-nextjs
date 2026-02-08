@@ -66,7 +66,6 @@ export default async function PostIdRoute({params}: PostIdRouteProps) {
                 "https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=1506&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                  } alt={post.title}
                  fill
-                 unoptimized
                  className="object-fill hover:scale-105 transition-transform duration-500" />
             </div>
 

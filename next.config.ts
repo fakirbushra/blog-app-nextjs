@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         port: "3210", 
         pathname: "/**",
       },
+      {
+        protocol: "https", 
+        hostname: "https://peaceful-gnat-366.convex.cloud", 
+        port: "", 
+      },
     ],
   },
 };
