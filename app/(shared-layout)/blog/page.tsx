@@ -5,14 +5,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { api } from '@/convex/_generated/api'
 import { fetchQuery } from 'convex/nextjs';
 import { Metadata } from 'next';
+import { cacheLife, cacheTag } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
+import { connection } from 'next/server';
 import { Suspense } from 'react';
 
-export const dynamic = 'force-static'
-// 'auto' | 'force-dynamic' | 'error' | 'force-static'
-export const revalidate = 30
-// false | 0 | number
+// export const dynamic = 'force-static'
+// // 'auto' | 'force-dynamic' | 'error' | 'force-static'
+// export const revalidate = 30
+// // false | 0 | number
 
 export const metadata: Metadata = {
     title: "Blog | DevBlog - The Developer Blog",
@@ -38,7 +40,10 @@ export default function BlogPage() {
 }
 
 async function LoadBlogPosts() {
-    // await new Promise((resolve) => setTimeout(resolve, 2000)) 
+    // await connection()
+    "use cache"
+    cacheLife("hours")
+    cacheTag("blog")
     const data = await fetchQuery(api.posts.getPost)
 
     return (
